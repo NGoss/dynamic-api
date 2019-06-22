@@ -2,7 +2,7 @@ FROM openjdk:8-jdk-alpine
 
 WORKDIR /source
 
-COPY ./src ./
+COPY ./* ./
 
 RUN ./gradlew build
 
