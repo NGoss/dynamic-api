@@ -32,7 +32,7 @@ public class MongoRepository implements IMongoRepository {
     }
 
     public void createCollection(GenericResource resource) {
-        MongoCollection collection = mongoDb.getCollection(resource.name);
+        MongoCollection<org.bson.Document> collection = mongoDb.getCollection(resource.name);
 
         try {
             collection.insertOne(resource.toBsonDocument());
