@@ -2,9 +2,6 @@ dist: trusty
 language: java
 install: true
 
-addons:
-  ssh_known_hosts: ec2-34-235-168-107.compute-1.amazonaws.com
-
 jdk:
   - openjdk8
 
