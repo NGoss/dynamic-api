@@ -5,6 +5,10 @@ install: true
 jdk:
   - openjdk8
 
+before_install:
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
+
 script:
   - ./gradlew build
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -13,7 +17,7 @@ script:
   - docker tag dynamic-api $DOCKER_USERNAME/dynamic-api
   - docker push $DOCKER_USERNAME/dynamic-api
   - docker logout
-  - echo "$ECR_PASSWORD" | docker login -u "$ECR_USERNAME" --password-stdin
+  - eval $(aws ecr get-login --region us-east-1 --no-include-email)
   - docker tag dynamic-api $ECR_REPOSITORY/dynamic-api
   - docker push $ECR_REPOSITORY/dynamic-api
   - docker logout
