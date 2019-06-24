@@ -8,9 +8,11 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 import io.foinse.dynamicapi.model.GenericResource;
 import io.foinse.dynamicapi.model.IConfiguration;
+import io.foinse.dynamicapi.model.MongoResource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,12 +48,23 @@ public class MongoRepository implements IMongoRepository {
         }
     }
 
-    public List<Document> getAllForCollection(String collectionName) {
+    public ArrayList<MongoResource> getAllForCollection(String collectionName) {
         MongoCollection<Document> collection = mongoDb.getCollection(collectionName);
         FindIterable<Document> documentIterable = collection.find();
-        List<Document> documents = new ArrayList<>();
 
-        documents = documentIterable.into(documents);
-        return documents;
+        ArrayList<MongoResource> resources = new ArrayList<>();
+
+        for (Document document : documentIterable) {
+            MongoResource resource = new MongoResource();
+            ObjectId id = document.get("_id", ObjectId.class);
+            resource.setId(id.toHexString());
+            document.remove("_id");
+            resource.setValue(document);
+            resources.add(resource);
+        }
+
+        return resources;
     }
+
+//    public Document getSingleDocumentFromCollection(String collectionName, int)
 }

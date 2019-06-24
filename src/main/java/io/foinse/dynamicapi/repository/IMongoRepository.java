@@ -1,11 +1,11 @@
 package io.foinse.dynamicapi.repository;
 
 import io.foinse.dynamicapi.model.GenericResource;
-import org.bson.Document;
+import io.foinse.dynamicapi.model.MongoResource;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IMongoRepository {
     void createResource(GenericResource resource);
-    List<Document> getAllForCollection(String collectionName);
+    ArrayList<MongoResource> getAllForCollection(String collectionName);
 }
