@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-ssh ec2-user@ec2-34-235-168-107.compute-1.amazonaws.com "sudo su; docker stop dynamic-api; docker rm dynamic-api; docker pull ngoss/dynamic-api; docker run -p 80:8080 --name dynamic-api ngoss/dynamic-api"
