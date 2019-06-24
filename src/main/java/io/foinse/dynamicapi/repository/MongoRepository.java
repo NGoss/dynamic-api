@@ -1,5 +1,7 @@
 package io.foinse.dynamicapi.repository;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import com.mongodb.client.FindIterable;
@@ -12,6 +14,7 @@ import io.foinse.dynamicapi.model.MongoResource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
 
 @Component
 public class MongoRepository implements IMongoRepository {
@@ -66,5 +71,16 @@ public class MongoRepository implements IMongoRepository {
         return resources;
     }
 
-//    public Document getSingleDocumentFromCollection(String collectionName, int)
+    public MongoResource getSingleDocumentFromCollection(String collectionName, String id) {
+        MongoCollection<Document> collection = mongoDb.getCollection(collectionName);
+
+        FindIterable<Document> results = collection.find(eq("_id", new ObjectId(id)));
+        Document documentResource = results.first();
+        MongoResource resource = new MongoResource();
+        resource.setId(documentResource.get("_id", ObjectId.class).toHexString());
+        documentResource.remove("_id");
+        resource.setValue(documentResource);
+
+        return resource;
+    }
 }

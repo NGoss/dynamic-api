@@ -36,4 +36,11 @@ public class ResourceController {
 
         return new ResponseEntity<>(resources, HttpStatus.OK);
     }
+
+    @RequestMapping(method=RequestMethod.GET, path = "/{resourceName}/{id}")
+    public ResponseEntity<MongoResource> getResourceWithId(@PathVariable String resourceName, @PathVariable String id) {
+        MongoResource resource = mongoRepository.getSingleDocumentFromCollection(resourceName, id);
+
+        return new ResponseEntity<>(resource, HttpStatus.OK);
+    }
 }
