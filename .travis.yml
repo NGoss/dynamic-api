@@ -12,4 +12,5 @@ script:
   - docker images
   - docker tag dynamic-api $DOCKER_USERNAME/dynamic-api
   - docker push $DOCKER_USERNAME/dynamic-api
-  - docker push 348892447740.dkr.ecr.us-east-1.amazonaws.com/dockerhub-mirror/dynamic-api
+  - docker tag dynamic-api $ECR_REPOSITORY/dynamic-api
+  - docker push $ECR_REPOSITORY/dynamic-api
