@@ -1,27 +1,22 @@
 package io.foinse.dynamicapi.repository;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 import io.foinse.dynamicapi.model.GenericResource;
 import io.foinse.dynamicapi.model.IConfiguration;
-import io.foinse.dynamicapi.model.MongoResource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.bson.BsonInvalidOperationException;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -53,34 +48,46 @@ public class MongoRepository implements IMongoRepository {
         }
     }
 
-    public ArrayList<MongoResource> getAllForCollection(String collectionName) {
+    public ArrayList<Document> getAllForCollection(String collectionName) {
         MongoCollection<Document> collection = mongoDb.getCollection(collectionName);
         FindIterable<Document> documentIterable = collection.find();
 
-        ArrayList<MongoResource> resources = new ArrayList<>();
+        ArrayList<Document> resources = new ArrayList<>();
 
         for (Document document : documentIterable) {
-            MongoResource resource = new MongoResource();
             ObjectId id = document.get("_id", ObjectId.class);
-            resource.setId(id.toHexString());
             document.remove("_id");
-            resource.setValue(document);
-            resources.add(resource);
+            document.append("id", id.toHexString());
+            resources.add(document);
         }
 
         return resources;
     }
 
-    public MongoResource getSingleDocumentFromCollection(String collectionName, String id) {
+    public Document getSingleDocumentFromCollection(String collectionName, String id) {
         MongoCollection<Document> collection = mongoDb.getCollection(collectionName);
 
         FindIterable<Document> results = collection.find(eq("_id", new ObjectId(id)));
-        Document documentResource = results.first();
-        MongoResource resource = new MongoResource();
-        resource.setId(documentResource.get("_id", ObjectId.class).toHexString());
-        documentResource.remove("_id");
-        resource.setValue(documentResource);
+        Document document = results.first();
 
-        return resource;
+        if (document != null) {
+            ObjectId documentId = document.get("_id", ObjectId.class);
+            document.remove("_id");
+            document.append("id", documentId.toHexString());
+        }
+
+        return document;
+    }
+
+    public void updateDocumentById(String id, GenericResource resource) throws IOException {
+        MongoCollection<Document> collection = mongoDb.getCollection(resource.name);
+
+        collection.replaceOne(eq("_id", new ObjectId(id)), resource.toBsonDocument());
+    }
+
+    public void deleteDocumentById(String collectionName, String id) {
+        MongoCollection<Document> collection = mongoDb.getCollection(collectionName);
+
+        collection.deleteOne(eq("_id", new ObjectId(id)));
     }
 }

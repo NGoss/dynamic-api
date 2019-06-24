@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class GenericResource {
     @Id
@@ -18,7 +19,7 @@ public class GenericResource {
 
     public GenericResource() {}
 
-    public GenericResource(String name, Object properties) {
+    public GenericResource(String name, Map<String, Object> properties) {
         this.name = name;
         this.properties = properties;
     }
