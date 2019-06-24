@@ -64,6 +64,6 @@ public class ResourceController {
 
     @RequestMapping(method=RequestMethod.GET, path = "/hello")
     public ResponseEntity hello() {
-        return new ResponseEntity("hello", HttpStatus.OK);
+        return new ResponseEntity("hello", HttpStatus.UNAUTHORIZED);
     }
 }

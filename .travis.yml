@@ -10,7 +10,6 @@ before_install:
   - export PATH=$PATH:$HOME/.local/bin
 
 script:
-  - ./gradlew build
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t dynamic-api .
   - docker images
