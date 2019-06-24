@@ -61,4 +61,9 @@ public class ResourceController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(method=RequestMethod.GET, path = "/hello")
+    public ResponseEntity hello() {
+        return new ResponseEntity("hello", HttpStatus.OK);
+    }
 }
