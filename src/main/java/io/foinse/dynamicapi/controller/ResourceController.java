@@ -33,7 +33,7 @@ public class ResourceController {
     public ResponseEntity<ArrayList<Document>> getAllResourcesForType(@PathVariable String resourceName) {
         ArrayList<Document> resources = mongoRepository.getAllForCollection(resourceName);
 
-        return new ResponseEntity<>(resources, HttpStatus.OK);
+        return new ResponseEntity<>(resources, HttpStatus.UNAUTHORIZED); //TODO HttpStatus.OK
     }
 
     @RequestMapping(method=RequestMethod.GET, path = "/{resourceName}/{id}")
@@ -60,10 +60,5 @@ public class ResourceController {
         mongoRepository.deleteDocumentById(resourceName, id);
 
         return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(method=RequestMethod.GET, path = "/hello")
-    public ResponseEntity hello() {
-        return new ResponseEntity("hello", HttpStatus.UNAUTHORIZED);
     }
 }
