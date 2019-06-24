@@ -19,4 +19,5 @@ script:
   - eval $(aws ecr get-login --region us-east-1 --no-include-email)
   - docker tag dynamic-api $ECR_REPOSITORY/dynamic-api
   - docker push $ECR_REPOSITORY/dynamic-api
+  - aws ecs update-service --cluster dynamic-api --service dynamic-api --force-new-deployment
   - docker logout

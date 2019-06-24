@@ -33,7 +33,7 @@ public class ResourceController {
     public ResponseEntity<ArrayList<Document>> getAllResourcesForType(@PathVariable String resourceName) {
         ArrayList<Document> resources = mongoRepository.getAllForCollection(resourceName);
 
-        return new ResponseEntity<>(resources, HttpStatus.UNAUTHORIZED); //TODO HttpStatus.OK
+        return new ResponseEntity<>(resources, HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.GET, path = "/{resourceName}/{id}")
