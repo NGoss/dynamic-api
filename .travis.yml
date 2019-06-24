@@ -1,8 +1,27 @@
+dist: trusty
 language: java
 install: true
+
+addons:
+  ssh_known_hosts: ec2-34-235-168-107.compute-1.amazonaws.com
 
 jdk:
   - openjdk8
 
 script:
   - ./gradlew build
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t dynamic-api .
+  - docker images
+  - docker tag dynamic-api $DOCKER_USERNAME/dynamic-api
+  - docker push $DOCKER_USERNAME/dynamic-api
+
+before_deploy:
+  ssh-add deploy/dynamic-api.pem
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: bash deploy/deploy.sh
+  on:
+    branch: master
