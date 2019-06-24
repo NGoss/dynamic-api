@@ -17,7 +17,7 @@ script:
   - docker push $DOCKER_USERNAME/dynamic-api
 
 before_deploy:
-  eval "$(ssh-agent -s)"; ssh-add deploy/dynamic-api.pem
+  eval "$(ssh-agent -s)"; chmod 400 deploy/dynamic-api.pem; ssh-add deploy/dynamic-api.pem
 
 deploy:
   provider: script
