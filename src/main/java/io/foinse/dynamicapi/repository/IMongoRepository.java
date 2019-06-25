@@ -13,4 +13,5 @@ public interface IMongoRepository {
     Document getSingleDocumentFromCollection(String collectionName, String id);
     void updateDocumentById(String id, GenericResource resource) throws IOException;
     void deleteDocumentById(String collectionName, String id);
+    ArrayList<String> getAllCollectionNames();
 }

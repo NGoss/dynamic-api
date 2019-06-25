@@ -5,6 +5,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import io.foinse.dynamicapi.model.GenericResource;
 import io.foinse.dynamicapi.model.IConfiguration;
 import org.apache.logging.log4j.LogManager;
@@ -89,5 +90,11 @@ public class MongoRepository implements IMongoRepository {
         MongoCollection<Document> collection = mongoDb.getCollection(collectionName);
 
         collection.deleteOne(eq("_id", new ObjectId(id)));
+    }
+
+    public ArrayList<String> getAllCollectionNames() {
+        MongoIterable<String> collections = mongoDb.listCollectionNames();
+        ArrayList<String> collectionsList = new ArrayList<>();
+        return collections.into(collectionsList);
     }
 }

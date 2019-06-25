@@ -21,6 +21,11 @@ public class ResourceController {
         this.mongoRepository = mongoRepository;
     }
 
+    @RequestMapping(method=RequestMethod.GET, path="/")
+    public ResponseEntity<ArrayList<String>> getAllResourceDefinitions() {
+        return new ResponseEntity<>(mongoRepository.getAllCollectionNames(), HttpStatus.OK);
+    }
+
     @RequestMapping(method=RequestMethod.POST, path = "/{resourceName}")
     public ResponseEntity createResourceDefinition(@PathVariable String resourceName,
                                                    @RequestBody Map<String, Object> resource) {
