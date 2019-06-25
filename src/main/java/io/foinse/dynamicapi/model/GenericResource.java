@@ -5,8 +5,6 @@ import org.bson.Document;
 import org.springframework.data.annotation.Id;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class GenericResource {

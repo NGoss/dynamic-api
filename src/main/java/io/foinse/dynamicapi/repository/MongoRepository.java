@@ -10,7 +10,6 @@ import io.foinse.dynamicapi.model.GenericResource;
 import io.foinse.dynamicapi.model.IConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.bson.BsonInvalidOperationException;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

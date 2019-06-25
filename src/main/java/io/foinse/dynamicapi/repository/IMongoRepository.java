@@ -1,7 +1,6 @@
 package io.foinse.dynamicapi.repository;
 
 import io.foinse.dynamicapi.model.GenericResource;
-import org.bson.BsonInvalidOperationException;
 import org.bson.Document;
 
 import java.io.IOException;
