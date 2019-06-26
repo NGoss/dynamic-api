@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class ResourceController {
     private IMongoRepository mongoRepository;
 
@@ -21,9 +22,19 @@ public class ResourceController {
         this.mongoRepository = mongoRepository;
     }
 
+    @RequestMapping(method=RequestMethod.OPTIONS, path="/")
+    public ResponseEntity handleOptions() {
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(method=RequestMethod.GET, path="/")
     public ResponseEntity<ArrayList<String>> getAllResourceDefinitions() {
         return new ResponseEntity<>(mongoRepository.getAllCollectionNames(), HttpStatus.OK);
+    }
+
+    @RequestMapping(method=RequestMethod.OPTIONS, path="/{resourceName}")
+    public ResponseEntity handleResourceOptions() {
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.POST, path = "/{resourceName}")
